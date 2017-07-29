@@ -10,12 +10,17 @@ endif
 
 install:
 	wget http://mirror.navercorp.com/apache/kafka/$(KAFKA_VERSION)/$(DIR_NAME).tgz	
-	mkdir ./kafka
-	tar zxvf $(DIR_NAME).tgz -C ./kafka --strip-components=1
+	tar zxvf $(DIR_NAME).tgz
 	rm -rf ./$(DIR_NAME).tgz*
 
 build:
 	docker build -t kafka .
 
 run:
-	docker run -it --rm --name kafka
+	docker run -d -p 2181:2181 -p 9092-9100:9092-9100 --name kafka kafka
+
+zookeeper:
+	bin/zookeeper-server-start.sh config/zookeeper.properties
+
+kafka:
+	bin/kafka-server-start.sh config/server.properties
