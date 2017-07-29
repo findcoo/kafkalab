@@ -3,14 +3,19 @@ SCALA_VERSION=2.11
 DIR_NAME=kafka_$(SCALA_VERSION)-$(KAFKA_VERSION)
 
 
-ifneq ("$(wildcard /usr/local/lib/$(DIR_NAME))","")
-$(shell rm -rf /usr/local/lib/$(DIR_NAME))
+ifneq ("$(wildcard ./kafka)","")
+$(shell rm -rf ./kafka)
 endif
 
 
 install:
 	wget http://mirror.navercorp.com/apache/kafka/$(KAFKA_VERSION)/$(DIR_NAME).tgz	
-	tar zxvf $(DIR_NAME).tgz
-	mv $(DIR_NAME) /usr/local/lib/
+	mkdir ./kafka
+	tar zxvf $(DIR_NAME).tgz -C ./kafka --strip-components=1
 	rm -rf ./$(DIR_NAME).tgz*
-	ln -sf /usr/local/lib/$(DIR_NAME)/bin/* /usr/local/bin/
+
+build:
+	docker build -t kafka .
+
+run:
+	docker run -it --rm --name kafka
