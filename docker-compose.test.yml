@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+ broker1:
+  image: kafka:latest
+  ports:
+   - 9092:9092
+  command: ["make", "broker.stage"]  

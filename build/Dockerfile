@@ -14,7 +14,6 @@ RUN make install \
 
 WORKDIR kafka
 COPY config ./config/
-COPY entrypoint.sh ./
+RUN touch test.txt
 
-ENTRYPOINT ["/kafka/entrypoint.sh"]
-CMD ["make", "kafka"]
+CMD ["make", "broker1"]
