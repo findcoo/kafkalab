@@ -4,12 +4,16 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"time"
 
 	"github.com/Shopify/sarama"
 )
 
-func test() {
-	producer, err := sarama.NewSyncProducer([]string{"localhost:9092"}, nil)
+func producer() {
+	config := sarama.NewConfig()
+	config.Producer.RequiredAcks = sarama.RequiredAcks
+
+	producer, err := sarama.NewSyncProducer([]string{"127.0.0.1:9092"}, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -34,4 +38,32 @@ func test() {
 	}
 
 	log.Printf("> message sent to partition %d at offset %d\n", partition, offset)
+}
+
+func consumer() {
+	consumer, err := sarama.NewConsumer([]string{"127.0.0.1:9092"}, nil)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	defer func() {
+		if err := consumer.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	partitionConsumer, err := consumer.ConsumePartition("test_topic", 0, sarama.OffsetNewest)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	for {
+		select {
+		case msg := <-partitionConsumer.Messages():
+			log.Printf("Consumed message offset %d\n", msg.Offset)
+			log.Printf("Consumed message is %s\n", msg.Value)
+		case <-time.After(time.Second * 5):
+			return
+		}
+	}
 }

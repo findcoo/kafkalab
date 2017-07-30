@@ -15,6 +15,9 @@ install:
 zoo.stage:
 	bin/zookeeper-server-start.sh config/zookeeper.stage.properties
 
+broker.stage:
+	bin/kafka-server-start.sh config/broker.stage.properties
+
 zoo1:
 	bin/zookeeper-server-start.sh config/zookeeper.properties
 

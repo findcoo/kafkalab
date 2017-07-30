@@ -5,5 +5,6 @@ import (
 )
 
 func TestProducer(t *testing.T) {
-	test()
+	producer()
+	consumer()
 }
