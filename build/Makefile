@@ -15,9 +15,6 @@ install:
 zoo.stage:
 	bin/zookeeper-server-start.sh config/zookeeper.stage.properties
 
-broker.stage:
-	bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
-
 zoo1:
 	bin/zookeeper-server-start.sh config/zookeeper.properties
 
