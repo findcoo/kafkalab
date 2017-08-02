@@ -1,13 +1,15 @@
-docker.build:
+build.docker:
 	docker build -t kafka ./build/
 
-build: docker.build
+build: build.docker ## build kafka docker image
 
-run:
-	docker run -d -p 2181:2181 -p 9092-9100:9092-9100 --name kafka kafka
-
-stage:
+run.stage: ## run staged kafka broker, zookeeper
 	docker-compose -f docker-compose.test.yml up -d
 
-stage.down:
+stop.stage: ## stop staged kafka broker, zookeeper
 	docker-compose -f docker-compose.test.yml down
+
+help:
+	@grep -E '^[a-zA-Z0-9._-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.DEFAULT_GOAL := help
