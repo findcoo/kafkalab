@@ -12,6 +12,7 @@ install:
 	wget http://mirror.navercorp.com/apache/kafka/$(KAFKA_VERSION)/$(DIR_NAME).tgz	
 	tar zxvf $(DIR_NAME).tgz
 	rm -rf ./$(DIR_NAME).tgz*
+
 zoo.stage:
 	bin/zookeeper-server-start.sh config/zookeeper.stage.properties
 
